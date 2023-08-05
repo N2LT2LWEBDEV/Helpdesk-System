@@ -1,0 +1,167 @@
+<?php
+ 
+class User {
+    protected $firstname;
+    protected $lastname;
+    protected $phoneNumber;
+    protected $email;
+    protected $staffId;
+    protected $password;
+ 
+    function __construct($firstname, $lastname, $phoneNumber, $email, $staffId, $password) {
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
+        $this->phoneNumber = $phoneNumber;
+        $this->email = $email;
+        $this->staffId = $staffId;
+        $this->password = $password;  // This should be hashed in a real system
+    }
+}
+ 
+class Admin extends User {
+    private $issues = array();
+ 
+    function login() {
+        // Implement login logic here
+    }
+ 
+    function createEngineerAccount($firstname, $lastname, $phoneNumber, $email, $staffId, $password) {
+        return new Engineer($firstname, $lastname, $phoneNumber, $email, $staffId, $password);
+    }
+ 
+    function disableAccount($staffId) {
+        // Implement account disabling logic here
+    }
+ 
+    function enableAccount($staffId) {
+        // Implement account enabling logic here
+    }
+ 
+    function createIssue($issueNo, $issueTitle, $issueDescription, $issueSolution) {
+        $issue = new Issue($issueNo, $issueTitle, $issueDescription, $issueSolution);
+        array_push($this->issues, $issue);
+        return $issue;
+    }
+ 
+    function viewAllIssues() {
+        return $this->issues;
+    }
+ 
+    function viewIssue($issueNo) {
+        // Implement issue viewing logic here
+    }
+ 
+    function editIssue($issueNo) {
+        // Implement issue editing logic here
+    }
+ 
+    function deleteIssue($issueNo) {
+        // Implement issue deletion logic here
+    }
+ 
+    function viewLoggedFaults() {
+        // Implement logged issue viewing logic here
+    }
+ 
+    function respondToLoggedFaults($issueNo) {
+        // Implement logged issue response logic here
+    }
+ 
+    function respondToChatMessages($issueNo) {
+        // Implement chat message response logic here
+    }
+}
+ 
+class SuperAdmin extends Admin {
+  function createAdminAccount($firstname, $lastname, $phoneNumber, $email, $staffId, $password) {
+      return new Admin($firstname, $lastname, $phoneNumber, $email, $staffId, $password);
+  }
+}
+ 
+class Engineer extends User {
+  function login() {
+      // Implement login logic here
+  }
+ 
+  function resetPassword() {
+      // Implement password reset logic here
+  }
+ 
+  function viewAllIssues() {
+      // Implement issue viewing logic here
+  }
+ 
+  function searchIssue($issueNo) {
+      // Implement issue search logic here
+  }
+ 
+  function viewSolution($issueNo) {
+      // Implement solution viewing logic here
+  }
+ 
+  function logFault($issueNo, $faultDescription) {
+    // Find the issue by its number
+    $issue = $this->findIssue($issueNo);
+ 
+    // Create a new fault and add it to the issue
+    $fault = new Fault($this, $faultDescription);
+    $issue->addFault($fault);
+  }
+ 
+  function viewResponseToLoggedIssues() {
+      // Implement response viewing logic here
+  }
+ 
+  function callOffice() {
+      // Implement office calling logic here
+  }
+ 
+  function sendChatMessage($message) {
+      // Implement office chat logic here
+  }
+}
+ 
+class Issue {
+  private $issueNo;
+  private $issueTitle;
+  private $issueDescription;
+  private $issueSolution;
+ 
+  function __construct($issueNo, $issueTitle, $issueDescription, $issueSolution) {
+      $this->issueNo = $issueNo;
+      $this->issueTitle = $issueTitle;
+      $this->issueDescription = $issueDescription;
+      $this->issueSolution = $issueSolution;
+  }
+ 
+  function addMessage($message) {
+      array_push($this->messages, $message);
+  }
+ 
+  function addFault($fault) {
+      array_push($this->faults, $fault);
+  }
+}
+ 
+class Message {
+  private $sender;
+  private $content;
+ 
+  function __construct($sender, $content) {
+      $this->sender = $sender;
+      $this->content = $content;
+  }
+}
+ 
+class Fault {
+  private $reporter;
+  private $description;
+ 
+  function __construct($reporter, $description) {
+      $this->reporter = $reporter;
+      $this->description = $description;
+  }
+}
+ 
+?>
+ 
